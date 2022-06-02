@@ -1,4 +1,4 @@
-# Segue-training-TB-26
+# Segue-training-TB-6
 # SQL Programming(MySQL)
 
 - DDL and DML statements
