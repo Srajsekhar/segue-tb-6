@@ -1,7 +1,7 @@
 Java Notes Day 1
 ----------------
 Working with Multiple classes
----------------------------
+------------------------------
 Exercise:
 Create 3 classes A, B and C and inside each create display method that displays the name of the class. 
 Create objects and call these 3 methods from Main class. 
