@@ -1,0 +1,320 @@
+Java Notes Day 2
+
+Working with Objects: Heap & Stack
+==================================
+Tip: 
+All references go on the stack
+All Objects go on the Heap 
+
+Example: 
+public class Main
+{
+	public static void main(String[] args) {
+		 A a1 = new A(); 
+		 A a2 =  new A(); 
+		 
+		 a1.setX(5);
+		 a2.setX(6);
+		 
+		 int x = a1.getX();
+		 System.out.println(x); //5
+		 
+		 x = a2.getX();
+		 System.out.println(x); //6
+	}
+}
+
+class A{
+    int x; 
+    
+    void setX(int x){
+        this.x = x; 
+    }
+    
+    int getX(){
+        return x;
+    }
+}
+
+Case Study: 
+Develop a banking App Scenario for handling balances of multiple customers and implementing deposit functionality. 
+
+	Stack							Heap
+	-----							----
+Customer c1:100X	100X:CustObj:String(name):null--double(balance):14000
+Customer c2:200X	200X:CustObj:String(name):null--double(balance):11000
+
+Solution:
+public class Main
+{
+	public static void main(String[] args) {
+	    Customer c1 = new Customer(); 
+	    Customer c2 = new Customer(); 
+        /*
+        	Stack							Heap
+        	-----							----
+        Customer c1:100X	100X:CustObj:String(name):null--double(balance):0.0
+        Customer c2:200X	200X:CustObj:String(name):null--double(balance):0.0
+        */
+
+        c1.setBalance(10000);
+        c2.setBalance(8000);
+        /*
+        	Stack							Heap
+        	-----							----
+        Customer c1:100X	100X:CustObj:String(name):null--double(balance):10000
+        Customer c2:200X	200X:CustObj:String(name):null--double(balance):8000
+        */
+
+        double balance = c1.getBalance();
+        System.out.println("Balance of C1 is: " + balance); //10000
+        
+        balance = c2.getBalance();
+        System.out.println("Balance of C2 is: " + balance); //8000
+        
+        double updatedBalance = c1.computeDeposit(c1.getBalance(),4000); //10000,4000 : 14000
+        c1.setBalance(updatedBalance);
+         
+        updatedBalance = c2.computeDeposit(c2.getBalance(),3000); //8000,3000 : 11000
+        c2.setBalance(updatedBalance);
+        /*
+        	Stack							Heap
+        	-----							----
+        Customer c1:100X	100X:CustObj:String(name):null--double(balance):14000
+        Customer c2:200X	200X:CustObj:String(name):null--double(balance):11000
+        */
+        System.out.println("*****After Deposit******");
+        balance = c1.getBalance();
+        System.out.println("Balance of C1 is: " + balance); //14000
+        
+        balance = c2.getBalance();
+        System.out.println("Balance of C2 is: " + balance); //11000
+	}
+}
+ 
+ class Customer{
+     String name;
+     double balance; 
+     
+    void setBalance(double balance){
+         this.balance = balance; 
+     }
+     
+    double getBalance(){
+         return balance;
+     }
+     
+    double computeDeposit(double balance, double amount ){ //balance = 10000, amount=4000
+         double updatedBalance = balance + amount; 
+         return updatedBalance; //14000
+     }
+ }
+ 
+ Output:
+Balance of C1 is: 10000.0
+Balance of C2 is: 8000.0
+*****After Deposit******
+Balance of C1 is: 14000.0
+Balance of C2 is: 11000.0
+ 
+Case Study: 
+-----------
+Create class Student and compute result for multiple students. Maintain marks of each student and calculate percentage.
+
+class Student{
+	int roll;
+	double marks; 
+} 
+
+Total Marks: 200. 
+Hint: percent = (marks * 100) / total;
+
+Solution:
+public class Main
+{
+	public static void main(String[] args) {
+	    Student s1= new Student(); 
+	    Student s2= new Student(); 
+	    
+	    /* Heap & Stack */
+	    
+	    s1.setMarks(150); 
+	    s2.setMarks(160);
+	    
+	    /* Heap & Stack */
+	    
+	    double percent = s1.computePercent(s1.getMarks());
+	    System.out.println("Percent of S1: " + percent);
+	    
+	    percent = s2.computePercent(s2.getMarks());
+	    System.out.println("Percent of S2: " + percent);
+	}
+} 
+class Student{
+    int roll; 
+    double marks;
+    
+    void setMarks(double marks){
+        this.marks = marks;
+    }
+    
+    double getMarks(){
+        return marks;
+    }
+    
+    double computePercent(double marks){
+        double percent = (marks * 100) / 200;
+        return percent; 
+    }
+}
+
+Inheritance & Polymorphism
+==========================
+
+public class Main
+{
+	public static void main(String[] args) {
+	    C c=new C(); 
+	    c.m1();
+	    c.m2();
+	    c.m3();
+	}
+}  
+
+class A{
+    void m1(){
+        System.out.println("m1 in A");
+    }
+}
+
+class B extends A{
+    void m2(){
+        System.out.println("m2 in B");
+    }
+    //B has 2 method: m2() , m1()-A
+}
+
+class C extends B{
+    void m3(){
+        System.out.println("m3 in C");
+    }
+    //C m3(), m2()-B, m1()-A
+}
+
+
+Signature of the method
+-----------------------
+Signature of the method is computed using following 4 parameters. 
+
+1. Name of the method
+2. Number of Arguments
+3. Data type of Arguments
+4. Sequence of Datatypes
+
+Overloading & Overriding
+------------------------
+Tip: If the signature of the methods is same, it is overriding. 
+If Signature is not same but the names are similar, then it is Overloading. 
+If the names are different then its just 2 different methods altogather. 
+
+Ex 1. 
+void display()
+void display(int x)
+
+-> Sig not Same
+-> (Name)? Overloading 
+
+Ex 2. 
+void m1(int x)
+void m1(int y)
+
+-> Sig is Same, Overriding
+
+Ex 3.
+void m1(int x,double y)
+void m1(double x,int y)
+
+a. Overriding
+b. Overloading
+c. Nothing
+
+Ans : Overloading 
+
+ex 4. 
+void doStuff(int task)
+void doOtherStuff(int task)
+
+a. Overriding
+b. Overloading
+c. Nothing
+
+ANS: c Nothing 
+
+Exercise: 
+public class Main
+{
+	public static void main(String[] args) {
+	    C c=new C(); 
+	    c.m1();
+	    c.m2();
+	    c.m3();
+	}
+}  
+
+class A{
+    void m1(){
+        System.out.println("m1 in A");
+    }
+}
+
+class B extends A{
+    void m2(){
+        System.out.println("m2 in B");
+    }
+    //B has 2 method: m2() , m1()-A
+}
+
+class C extends B{
+    void m3(){
+        System.out.println("m3 in C");
+    }
+    
+    void m1(){
+         System.out.println("Updated m1 in C");
+    }
+    //C m3(), m2()-B, m1()
+}
+
+OUTPUT:
+-------
+Updated m1 in C
+m2 in B
+m3 in C
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
